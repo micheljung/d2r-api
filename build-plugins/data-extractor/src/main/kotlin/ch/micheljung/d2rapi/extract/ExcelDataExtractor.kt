@@ -49,10 +49,6 @@ class ExcelDataExtractor(
                 .toList()
                 .joinToString("\r\n")
 
-              if (String(pathResult.pathFragments.last()!!, StandardCharsets.UTF_8).endsWith("magicsuffix.txt")) {
-                System.err.println(content)
-              }
-
               Files.writeString(
                 outputPath,
                 content,
