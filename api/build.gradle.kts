@@ -54,10 +54,14 @@ d2rExtractor {
 }
 
 d2rDtoGenerator {
-  source.set(d2rExtractor.target)
+  source.set(layout.buildDirectory.dir("resources/main/d2r"))
   target.set(layout.buildDirectory.dir("generated/sources/d2r"))
 }
 
 tasks.compileKotlin {
   dependsOn(tasks.generate)
+}
+
+tasks.generate {
+  dependsOn(tasks.processResources)
 }

@@ -58,7 +58,7 @@ class ServiceGenerator(private val logger: Logger) {
             |  )
             |}.harvest(
             |  csvReader { delimiter = '\t' }
-            |    .readAllWithHeader(javaClass.getResourceAsStream("/${dataPath(resourceFile, dataFolderPath)}")!!)
+            |    .readAllWithHeader(javaClass.getResourceAsStream("/d2r/${dataPath(resourceFile, dataFolderPath)}")!!)
             |)
             """.trimMargin()
           )
