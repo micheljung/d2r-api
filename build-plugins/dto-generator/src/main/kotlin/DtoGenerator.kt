@@ -74,7 +74,8 @@ class DtoGenerator(private val logger: Logger) {
       properties.hasLong -> Long::class
       properties.hasInt -> Int::class
       else -> String::class
-    }.asTypeName().copy(nullable = properties.hasNull)
+      // As long as we can't use data classes, always nullable
+    }.asTypeName().copy(nullable = true)
 
   fun detectColumnProperties(current: ColumnProperties, value: String): ColumnProperties {
     val isNumber = NUMBER_PATTERN.matcher(value).matches()
@@ -126,6 +127,9 @@ class DtoGenerator(private val logger: Logger) {
   private fun isValidBigDecimal(value: String) = value.isNotBlank() &&
     value.toBigDecimalOrNull().let { it.toString() == value }
 
+  // While I would prefer to generate data classes, this results in two problems:
+  //  1. skills.txt results in too many methods for Jandex to handle
+  //  2. monstats.txt results in "Too many arguments in method signature"
   private fun createClass(name: String, headers: List<PropertySpec>): FileSpec {
     val className = ClassName(javaClass.packageName, name)
 
@@ -136,11 +140,9 @@ class DtoGenerator(private val logger: Logger) {
 
     val classBuilder = TypeSpec.classBuilder(className)
       .addAnnotation(GENERATED)
-      .addModifiers(KModifier.DATA)
-      .primaryConstructor(constructorBuilder.build())
 
     headers.forEach {
-      classBuilder.addProperty(PropertySpec.builder(it.name, it.type).initializer(it.name).build())
+      classBuilder.addProperty(PropertySpec.builder(it.name, it.type).initializer("null").mutable().build())
     }
 
     return FileSpec.builder(className.packageName, className.simpleName)
