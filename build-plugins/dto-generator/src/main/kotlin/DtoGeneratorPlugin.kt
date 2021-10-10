@@ -19,7 +19,6 @@ class DtoGeneratorPlugin : Plugin<Project> {
     target.tasks.register("generate", GeneratorTask::class.java) { task ->
       task.dataFolder.set(extension.source)
       task.dtoFolder.set(extension.target)
-      task.dependsOn("extract")
     }
 
     target.plugins.apply("ch.micheljung.d2rapi.data-extractor")
