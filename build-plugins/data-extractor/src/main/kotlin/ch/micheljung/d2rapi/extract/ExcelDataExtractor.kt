@@ -17,6 +17,7 @@ import kotlin.streams.toList
 class ExcelDataExtractor(
   private val dataFolder: Path,
   private val extractFolder: Path,
+  private val excludes: List<String>,
   private val logger: Logger,
 ) {
 
@@ -34,6 +35,7 @@ class ExcelDataExtractor(
 
       allFilePaths
         .filter { it.path.startsWith("data\\data\\global\\excel\\") && it.path.endsWith(".txt") }
+        .filter { !excludes.contains(it.path.replace("\\", "/")) }
         .forEach { pathResult ->
           val filePath = pathResult.path
           val outputPath = extractFolder.resolve(filePath)
@@ -71,12 +73,11 @@ class ExcelDataExtractor(
 
   private fun getFilterForFile(path: String): Predicate<in String> = when (path) {
     "uniqueitems.txt" -> Predicate {
-      val trimmed = it.trim()
-      trimmed != "Expansion" &&
-        trimmed != "Armor" &&
-        trimmed != "Elite Uniques" &&
-        trimmed != "Rings" &&
-        trimmed != "Class Specific"
+      !it.startsWith("Expansion\t") &&
+        !it.startsWith("Armor\t") &&
+        !it.startsWith("Elite Uniques\t") &&
+        !it.startsWith("Rings\t") &&
+        !it.startsWith("Class Specific\t")
     }
 
     "overlay.txt"

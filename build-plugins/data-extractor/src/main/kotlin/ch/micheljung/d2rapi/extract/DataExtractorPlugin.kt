@@ -3,10 +3,13 @@ package ch.micheljung.d2rapi.extract
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.ListProperty
+import java.nio.file.Path
 
 interface DataExtractorPluginExtension {
   val source: DirectoryProperty
   val target: DirectoryProperty
+  val excludes: ListProperty<String>
 }
 
 class DataExtractorPlugin : Plugin<Project> {
@@ -16,6 +19,7 @@ class DataExtractorPlugin : Plugin<Project> {
     target.tasks.register("extract", DataExtractorTask::class.java) { task ->
       task.dataFolder.set(extension.source)
       task.extractFolder.set(extension.target)
+      task.excludes.set(extension.excludes)
     }
   }
 }

@@ -128,7 +128,6 @@ Horadric Staff	125	0	1		1		0	0	hst	Staff		5	5000	blac							mana		10	10	res-pois
 Hell Forge Hammer	126	0	1		1		0	0	hfh	Hammer		5	5000	cred							fire-min		5	5	fire-max		20	20	res-fire		40	40	ac		35	35			0	0			0	0			0	0																						0
 KhalimFlail	127	0	1		1		0	0	qf1	Flail		5	5000	dblu							ltng-min		1	1	ltng-max		20	20	swing3		50	50	att		40	40			0	0			0	0			0	0																						0
 SuperKhalimFlail	128	0	1		1		0	0	qf2	Flail		5	5000	dblu							ltng-min		1	1	ltng-max		40	40	swing3		50	50	att		40	40	manasteal		6	6	lifesteal		6	6			0	0																						0
-Expansion																																																																						0
 Coldkill	129	100	1		1		44	36	9ha	Hatchet		5	5000	cblu	cblu		invhaxu				dmg-cold	50	40	40	res-cold		15	15	res-cold-max		15	15	swing3		30	30	hit-skill	45	10	10	gethit-skill	44	10	5	dmg%		150	190																						0
 Butcher's Pupil	130	100	1		1		47	39	9ax	Cleaver		5	5000	cblu	cblu		invaxeu				deadly		35	35	openwounds		25	25	dmg%		150	200	indestruct		1	1	swing3		30	30	dmg-norm		30	50																										0
 Islestrike	131	100	1		1		51	43	92a	Twin Axe		5	5000								dru		2	2	str		10	10	dex		10	10	vit		10	10	enr		10	10	ac-miss		50	50	crush		25	25	dmg%		170	190	skill	233	1	1	skill	248	1	1										0
@@ -200,7 +199,6 @@ Langer Briser	196	100	1		1		40	32	8lx	Arbalest		5	5000				inv8lxu				knock		1	1	
 Pus Spiter	197	100	1		1		44	36	8mx	Siege Crossbow		5	5000	cgrn	cgrn		inv8mxu				dmg-pois	200	192	192	hit-skill	91	4	1	nec		2	2	ease		-60	-60	gethit-skill	92	9	6	swing2		10	10	dmg%		150	220	att/lvl	10																				0
 Buriza-Do Kyanon	198	100	1		1		59	41	8hx	Balista		5	5000				invhxbu				pierce		100	100	dex		35	35	ac		75	150	dmg/lvl	20			swing2		80	80	dmg%		150	200	freeze		3	3	dmg-cold	200	32	196																		0
 Demon Machine	199	100	1		1		57	49	8rx	Chu-Ko-Nu		5	5000	blac	blac		invrxbu				ac		321	321	mana		36	36	pierce		66	66	explosivearrow		6	6	dmg-max		66	66	dmg%		123	123	att		632	632																						0
-Armor																																																																						0
 Peasent Crown	201	100	1		1		36	28	xap	War Hat		3	5000	lgry							enr		20	20	vit		20	20	allskills		1	1	move2		15	15	regen		6	12	ac%		100	100																										0
 Rockstopper	202	100	1		1		39	31	xkp	Sallet		3	5000				invxkpu				res-ltng		20	40	red-dmg%		10	10	balance2		30	30	ac%		160	220	res-fire		20	50	res-cold		20	40	vit		15	15																						0
 Stealskull	203	100	1		1		43	35	xlm	Casque		3	5000				invhlmu				manasteal		5	5	lifesteal		5	5	balance2		10	10	swing2		10	10	ac%		200	240	mag%		30	50																										0
@@ -247,7 +245,6 @@ Razortail	243	100	1		1		39	32	zvb	Sharkskin Belt		5	5000								thorns/lvl	8			d
 Gloomstrap	244	100	1		1		45	36	zmb	Mesh Belt		5	5000								light		-3	-3	mana%		15	15	manasteal		5	5	ac%		120	150	vit		15	15	regen-mana		15	15																										0
 Snowclash	245	100	1		1		49	42	ztb	Battle Belt		5	5000								gethit-skill	59	5	0	abs-cold		15	15	res-cold-max		15	15	dmg-cold	75	13	21	ac%		130	170	skill	59	2	2	skill	55	3	3	skill	60	2	2																		0
 Thudergod's Vigor	246	100	1		1		55	47	zhb	War Belt		5	5000								gethit-skill	121	5	7	dmg-ltng		1	50	res-ltng-max		10	10	abs-ltng		20	20	ac%		160	200	vit		20	20	str		20	20	skill	34	3	3	skill	35	3	3														0
-Elite Uniques																																																																						0
 Harlequin Crest	248	100	1		1		69	62	uap	Shako		3	5000	cgrn	cgrn						allskills		2	2	hp/lvl	12			mana/lvl	12			mag%		50	50	red-dmg%		10	10	str		2	2	dex		2	2	vit		2	2	enr		2	2														0
 Veil of Steel	249	100	1		1		77	73	uhm	Spired Helm		3	5000	lgry	lgry						res-all		50	50	ac%		60	60	str		15	15	vit		15	15	light		-4	-4	dur		20	20	ac		140	140																						0
 The Gladiator's Bane	250	100	1		1		85	85	utu	Wire Fleece		3	5000	lgry	lgry						ac%		150	200	red-mag		15	20	red-dmg		15	20	thorns		20	20	res-pois-len		50	50	dur		103	103	balance2		30	30	ac		50	50	nofreeze		1	1														0
@@ -267,7 +264,6 @@ Constricting Ring	263	100	0		1		95	95	rin	Ring		5	5000	cblu	cblu						res-all		1
 Stormspire	264	100	1		1		78	70	7wc	Giant Thresher		5	5000	dblu	dblu						res-ltng		50	50	gethit-skill	53	5	5	dmg%		150	250	str		10	10	gethit-skill	38	2	0	swing2		30	30	indestruct		1	1	dmg-ltng		1	237	light-thorns		27	27														0
 Eaglehorn	265	100	1		1		77	69	6l7	Crusader Bow		5	5000	dgld	dgld						ignore-ac		1	1	att/lvl	12			dmg%/lvl	16			dmg%		200	200	ama		1	1	dex		25	25																										0
 Windforce	266	100	1		1		80	73	6lw	Hydra Bow		5	5000	dyel	dyel						dex		5	5	dmg/lvl	25			regen-stam		30	30	manasteal		6	8	knock		1	1	dmg%		250	250	swing2		20	20	str		10	10																		0
-Rings																																																																						0
 Bul Katho's Wedding Band	268	100	1		1		66	58	rin	Ring		5	5000	dpur	dpur						hp/lvl	4			allskills		1	1	lifesteal		3	5	stam		50	50																																		0
 The Cat's Eye	269	100	1		5		58	50	amu	Amulet		5	5000	oran	oran						move2		30	30	swing2		20	20	ac		100	100	ac-miss		100	100	dex		25	25																														0
 The Rising Sun	270	100	1		5		73	65	amu	Amulet		5	5000	lgld	lgld						abs-fire/lvl	6			light		4	4	gethit-skill	56	2	0	dmg-fire		24	48	fireskill		2	2	regen		10	10																										0
@@ -278,7 +274,6 @@ Dwarf Star	274	100	1		10		53	45	rin	Ring		5	5000	dgry	dgry						gold%		100	100	s
 Raven Frost	275	100	1		10		53	45	rin	Ring		5	5000	cblu	cblu						nofreeze		1	1	dmg-cold	100	15	45	abs-cold%		20	20	mana		40	40	dex		15	20	att		150	250																										0
 Highlord's Wrath	276	100	1		5		73	65	amu	Amulet		5	5000	bwht	bwht						res-ltng		35	35	dmg-ltng		1	30	swing2		20	20	allskills		1	1	deadly/lvl	3			light-thorns		15	15																										0
 Saracen's Chance	277	100	1		5		55	47	amu	Amulet		5	5000	dpur	dpur						res-all		15	25	gethit-skill	76	10	2	str		12	12	dex		12	12	enr		12	12	vit		12	12																										0
-Class Specific																																																																						0
 Arreat's Face	279	100	1		1		50	42	baa	Slayer Guard		5	5000								bar		2	2	skilltab	12	2	2	ac%		150	200	balance2		30	30	att%		20	20	str		20	20	dex		20	20	lifesteal		3	6	res-all		30	30														0
 Homunculus	280	100	1		1		50	42	nea	Heirophant Trophy		5	5000								nec		2	2	skilltab	6	2	2	ac%		150	200	block2		30	30	block		40	40	enr		20	20	regen-mana		33	33	mana-kill		5	5	res-all		40	40														0
 Titan's Revenge	281	100	1		1		50	42	ama	Ceremonial Javelin		5	5000								ama		2	2	skilltab	2	2	2	dmg%		150	200	move2		30	30	rep-quant	30			str		20	20	dex		20	20	lifesteal		5	9	dmg-norm		25	50	stack		60	60										0

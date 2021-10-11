@@ -1,42 +1,8 @@
+import com.github.gradle.node.npm.task.NpxTask
+
 plugins {
-  kotlin("jvm")
-  kotlin("plugin.allopen")
-  id("io.quarkus")
-  id("org.kordamp.gradle.jandex") version "0.11.0"
-  id("ch.micheljung.d2rapi.dto-generator")
-}
-
-val quarkusPlatformGroupId: String by project
-val quarkusPlatformArtifactId: String by project
-val quarkusPlatformVersion: String by project
-
-dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-
-  implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
-
-  implementation("io.quarkus:quarkus-kotlin")
-
-  implementation("io.quarkus:quarkus-smallrye-graphql")
-  implementation("io.quarkus:quarkus-arc")
-  implementation("io.quarkus:quarkus-resteasy")
-  implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
-  implementation("io.github.blackmo18:kotlin-grass-core-jvm:1.0.0")
-  implementation("io.github.blackmo18:kotlin-grass-parser-jvm:0.8.0")
-
-  testImplementation("io.quarkus:quarkus-junit5")
-  testImplementation("io.rest-assured:rest-assured")
-}
-
-java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
-}
-
-allOpen {
-  annotation("javax.ws.rs.Path")
-  annotation("javax.enterprise.context.ApplicationScoped")
-  annotation("io.quarkus.test.junit.QuarkusTest")
+  id("com.github.node-gradle.node") version "3.1.1"
+  id("ch.micheljung.d2rapi.js-generator")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -44,18 +10,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
   kotlinOptions.javaParameters = true
 }
 
-sourceSets["main"].java {
-  srcDir("build/generated/sources/d2r")
-}
-
-d2rExtractor {
-  source.set(File("C:/Program Files (x86)/Diablo II Resurrected/Data"))
-  target.set(layout.projectDirectory.dir("src/main/resources/d2r"))
-}
-
-d2rDtoGenerator {
-  source.set(layout.buildDirectory.dir("resources/main/d2r"))
-  target.set(layout.buildDirectory.dir("generated/sources/d2r"))
+d2rJsGenerator {
+  source.set(rootProject.d2rExtractor.target)
+  target.set(layout.buildDirectory.dir("js"))
 }
 
 tasks.compileKotlin {
@@ -64,4 +21,18 @@ tasks.compileKotlin {
 
 tasks.generate {
   dependsOn(tasks.processResources)
+}
+
+tasks.build {
+  dependsOn(tasks.generate)
+}
+
+tasks.register<NpxTask>("createBundle") {
+  dependsOn(tasks.npmInstall)
+  command.set("npx")
+  args.set(listOf("rollup", "--format=cjs", "--file=bundle.js", "--", "index.mjs"))
+  inputs.files("package.json", "package-lock.json", "index.mjs")
+  inputs.dir("src")
+  inputs.dir(fileTree("node_modules").exclude(".cache"))
+  outputs.dir("dist")
 }
