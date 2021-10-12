@@ -1,6 +1,6 @@
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import json from 'rollup-plugin-json';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
 
 export default {
   input: 'index.mjs',
@@ -10,7 +10,7 @@ export default {
   },
   plugins: [
     json(),
-    resolve({
+    nodeResolve({
       preferBuiltins: true
     }),
     commonjs({

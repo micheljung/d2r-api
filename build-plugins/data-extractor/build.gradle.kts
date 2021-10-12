@@ -9,6 +9,7 @@ version = "1.0-SNAPSHOT"
 allprojects {
   repositories {
     mavenCentral()
+    maven(url = "https://nexus.prod.zkb.ch/repository/public/")
   }
 }
 

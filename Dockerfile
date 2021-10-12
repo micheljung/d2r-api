@@ -1,20 +1,18 @@
-## Stage 1 : build with maven builder image with native capabilities
-FROM quay.io/quarkus/ubi-quarkus-native-image:21.2-java16 AS build
-COPY --chown=quarkus:quarkus gradlew /code/gradlew
-COPY --chown=quarkus:quarkus gradle /code/gradle
-COPY --chown=quarkus:quarkus build.gradle.kts /code/
-COPY --chown=quarkus:quarkus settings.gradle.kts /code/
-COPY --chown=quarkus:quarkus gradle.properties /code/
-USER quarkus
-WORKDIR /code
-COPY --chown=quarkus:quarkus api /code/api
-COPY --chown=quarkus:quarkus build-plugins /code/build-plugins
-RUN chmod +x ./gradlew && ./gradlew -b /code/build.gradle.kts -Dquarkus.package.type=native build
+FROM timbru31/java-node:11-jdk-14 AS build
+ARG NPM_REGISTRY="http://registry.npmjs.org/"
+ENV NODE_ENV=production
+RUN mkdir /opt/app
+WORKDIR /opt/app
+COPY . .
+RUN chmod +x gradlew && ./gradlew build
+WORKDIR /opt/app/api
+RUN npm ci \
+   && npm cache clean --force \
+   && npx rollup --format=cjs --file=bundle.js -- index.mjs
 
-## Stage 2 : create the docker final image
-FROM registry.access.redhat.com/ubi8/ubi-minimal
-WORKDIR /work/
-COPY --from=build /code/api/build/*-runner /work/application
-RUN chmod 775 /work
-EXPOSE 8080
-CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
+FROM node:lts-alpine3.14
+ENV PATH /opt/app/api/node_modules/.bin:$PATH
+WORKDIR /opt/app/api
+COPY --from=build /opt/app/api/bundle.js ./server.js
+COPY --from=build /opt/app/api/node_modules/ ./node_modules
+CMD ["node", "server.js"]

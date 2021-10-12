@@ -1,41 +1,63 @@
 package ch.micheljung.d2rapi.dto
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.asTypeName
 import org.gradle.api.logging.Logger
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.*
 import java.util.regex.Pattern
 import kotlin.reflect.KClass
 import kotlin.streams.toList
 
-private val GENERATED = ClassName("javax.annotation.processing", "Generated")
 private val NUMBER_PATTERN: Pattern = Pattern.compile("^-?(?:0|[1-9]\\d*|\\.\\d+|\\d+\\.|\\d+\\.\\d+)$")
 
-class DtoGenerator(private val logger: Logger) {
+class SchemaGenerator(private val logger: Logger) {
 
   fun generate(sourcePath: Path, targetPath: Path) {
     Files.createDirectories(targetPath)
 
-    Files.list(sourcePath).use { stream ->
-      stream
-        // FIXME this file currently causes problems, see https://github.com/wildfly/jandex/issues/156
-        .filter { it.fileName.toString() != "skills.txt" }
-        .forEach {
-          logger.info("Processing $it")
-          val className = it.fileName.toString().substringBeforeLast('.').capitalize()
-          val properties = parseProperties(it)
+    val files = Files.list(sourcePath).use { it.toList() }
 
-          val fileSpec = createClass(className, properties)
+    logger.info("Building schema...")
+    val typeDefinitions = files.map { path ->
+      val properties = parseProperties(path)
 
-          logger.info("Writing ${targetPath.resolve(fileSpec.toJavaFileObject().toUri().toASCIIString())}")
-          fileSpec.writeTo(targetPath)
+      val typeName = typeName(path)
+      """
+      |type $typeName {
+      |${
+        properties.joinToString("\n") {
+          "  ${it.name}: ${
+            it.type.toString().replace("kotlin.", "").replace("?", "")
+          }${if (it.type.isNullable) "" else "!"}"
         }
-    }
+      }
+      |}
+      """.trimMargin()
+    }.joinToString("\n")
+
+    val queries = files.map { path ->
+      val queryName = path.baseName()
+      val typeName = typeName(path)
+      "  $queryName: [$typeName]"
+    }.joinToString("\n")
+
+    Files.writeString(
+      targetPath.resolve("schema.mjs"),
+      """
+        |export const schema = `
+        |$typeDefinitions
+        |type Query {
+        |$queries
+        |}
+        |`
+        """.trimMargin()
+    )
   }
+
+  private fun typeName(path: Path) = path.baseName().replaceFirstChar { it.titlecase() }
 
   private fun parseProperties(it: Path): List<PropertySpec> {
     val columnProperties = Files.lines(it, StandardCharsets.UTF_8).use { stream ->
@@ -67,14 +89,13 @@ class DtoGenerator(private val logger: Logger) {
   private fun determineTypeName(properties: ColumnProperties) =
     when {
       properties.hasString -> String::class
-      properties.hasBigDecimal -> BigDecimal::class
-      properties.hasBigInteger -> BigInteger::class
-      properties.hasDouble -> Double::class
+      properties.hasBigDecimal -> Float::class
+      properties.hasBigInteger -> Int::class
+      properties.hasDouble -> Float::class
       properties.hasFloat -> Float::class
-      properties.hasLong -> Long::class
+      properties.hasLong -> Int::class
       properties.hasInt -> Int::class
       else -> String::class
-      // As long as we can't use data classes, always nullable
     }.asTypeName().copy(nullable = true)
 
   fun detectColumnProperties(current: ColumnProperties, value: String): ColumnProperties {
@@ -127,43 +148,6 @@ class DtoGenerator(private val logger: Logger) {
   private fun isValidBigDecimal(value: String) = value.isNotBlank() &&
     value.toBigDecimalOrNull().let { it.toString() == value }
 
-  // While I would prefer to generate data classes, this results in two problems:
-  //  1. skills.txt results in too many methods for Jandex to handle
-  //  2. monstats.txt results in "Too many arguments in method signature"
-  private fun createClass(name: String, headers: List<PropertySpec>): FileSpec {
-    val className = ClassName(javaClass.packageName, name)
-
-    val constructorBuilder = FunSpec.constructorBuilder()
-    headers.forEach {
-      constructorBuilder.addParameter(it.name, it.type)
-    }
-
-    val classBuilder = TypeSpec.classBuilder(className)
-      .addAnnotation(GENERATED)
-
-    headers.forEach {
-      classBuilder.addProperty(PropertySpec.builder(it.name, it.type).initializer("null").mutable().build())
-    }
-
-    return FileSpec.builder(className.packageName, className.simpleName)
-      .addType(classBuilder.build())
-      .suppressWarningTypes("RedundantVisibilityModifier")
-      .build()
-  }
-
-  private fun FileSpec.Builder.suppressWarningTypes(vararg types: String): FileSpec.Builder = apply {
-    if (types.isEmpty()) {
-      return this
-    }
-
-    val format = "%S,".repeat(types.count()).trimEnd(',')
-    addAnnotation(
-      AnnotationSpec.builder(ClassName("", "Suppress"))
-        .addMember(format, *types)
-        .build()
-    )
-  }
-
   data class TypeDetection(val name: String, val type: PropertyType, val sure: Boolean, val nullable: Boolean)
 
   enum class PropertyType(val kClass: KClass<*>) {
@@ -187,3 +171,4 @@ class DtoGenerator(private val logger: Logger) {
     var hasString: Boolean = false,
   )
 }
+

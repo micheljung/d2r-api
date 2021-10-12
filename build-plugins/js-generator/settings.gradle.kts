@@ -3,8 +3,9 @@ pluginManagement {
     mavenLocal()
     mavenCentral()
     gradlePluginPortal()
+    maven(url = "https://nexus.prod.zkb.ch/repository/public/")
   }
 }
-rootProject.name = "dto-generator"
+rootProject.name = "js-generator"
 
 includeBuild("../data-extractor")

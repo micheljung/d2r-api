@@ -4,7 +4,7 @@ pluginManagement {
     gradlePluginPortal()
   }
   includeBuild("build-plugins/data-extractor")
-  includeBuild("build-plugins/dto-generator")
+  includeBuild("build-plugins/js-generator")
 }
 rootProject.name = "d2r-api"
 

@@ -4,7 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 
-interface DtoGeneratorPluginExtension {
+interface JsGeneratorPluginExtension {
   /** The directory containing the directory structure to the extracted excel files. */
   val source: DirectoryProperty
 
@@ -12,9 +12,9 @@ interface DtoGeneratorPluginExtension {
   val target: DirectoryProperty
 }
 
-class DtoGeneratorPlugin : Plugin<Project> {
+class JsGeneratorPlugin : Plugin<Project> {
   override fun apply(target: Project) {
-    val extension = target.extensions.create("d2rDtoGenerator", DtoGeneratorPluginExtension::class.java)
+    val extension = target.extensions.create("d2rJsGenerator", JsGeneratorPluginExtension::class.java)
 
     target.tasks.register("generate", GeneratorTask::class.java) { task ->
       task.dataFolder.set(extension.source)

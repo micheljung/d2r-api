@@ -24,8 +24,7 @@ abstract class GeneratorTask : DefaultTask() {
     val source = dataFolderPath.resolve("data/data/global/excel")
     val target = dtoFolder.get().asFile.toPath()
 
-    DtoGenerator(logger).generate(source, target)
-    ServiceGenerator(logger).generate(source, target, dataFolderPath)
-    ResourceGenerator(logger).generate(source, target)
+    SchemaGenerator(logger).generate(source, target)
+    ResolversGenerator(logger).generate(source, target.resolve("resolvers"))
   }
 }

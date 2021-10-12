@@ -1,20 +1,22 @@
 import polka from "polka";
 import bp from "body-parser";
-const { json } = bp;
 import send from "@polka/send-type";
 import * as gql from "graphql";
-import * as taskDefs from "./src/schema";
-import resolvers from "./src/resolvers";
-const { graphql, buildSchema } = gql;
-const { port = 3000 } = process.env;
+import * as taskDefs from "./build/js/schema.mjs";
+import {root} from "./build/js/resolvers/index.mjs";
+
+const {json} = bp;
+
+const {graphql, buildSchema} = gql;
+const {port = 3000} = process.env;
 
 const serverSchema = buildSchema(taskDefs.schema);
 
 polka()
   .use(json())
   .post("/", async (req, res) => {
-    let { query } = req.body;
-    const data = await graphql(serverSchema, query, resolvers);
+    let {query} = req.body;
+    const data = await graphql(serverSchema, query, root);
     send(res, 200, data);
   })
   .listen(port, err => {
