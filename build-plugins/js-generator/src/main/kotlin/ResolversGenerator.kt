@@ -8,7 +8,8 @@ import kotlin.streams.toList
 
 class ResolversGenerator(private val logger: Logger) {
 
-  private val csv2Json = Csv2Json()
+  private val csv = Csv()
+  private val json = Json()
 
   fun generate(sourcePath: Path, targetPath: Path) {
     Files.createDirectories(targetPath)
@@ -17,14 +18,34 @@ class ResolversGenerator(private val logger: Logger) {
       stream.map {
         logger.info("Processing $it")
         val baseName = it.fileName.baseName()
+        val items = csv.read(it)
 
-        val json = csv2Json.convert(it)
         val targetFile = targetPath.resolve("${baseName}.mjs")
 
         logger.info("Writing $targetFile")
+
+        val content = """
+          |import flexsearch from 'flexsearch';
+          |const { Document } = flexsearch;
+          |const $baseName = new Document({
+          |  cache: 1000,
+          |  store: true,
+          |  index: [
+          |${items[0].keys.joinToString(prefix = "    \"", postfix = "\"", separator = "\",\n    \"")}
+          |  ]
+          |});
+          |
+          |${
+          items.mapIndexed { index: Int, map: Map<*, *> ->
+            // TODO convert values to guessed type
+            "$baseName.add($index, ${json.asString(map)})"
+          }.joinToString("\n")
+        }
+          |
+          |export {$baseName};
+          """.trimMargin()
         Files.writeString(
-          targetFile,
-          "export default $json;",
+          targetFile, content,
           StandardOpenOption.TRUNCATE_EXISTING,
           StandardOpenOption.CREATE
         )
@@ -34,16 +55,18 @@ class ResolversGenerator(private val logger: Logger) {
 
     Files.writeString(
       targetPath.resolve("index.mjs"), """
-      |${resolvers.map {
-        val importName = it.fileName.baseName()
-        "import $importName from './${it.fileName}';"
-      }.joinToString("\n")}
-      |
+      |${
+        resolvers.map {
+          val importName = it.fileName.baseName()
+          "import {$importName} from './${it.fileName}'"
+        }.joinToString("\n")
+      }
       |export const root = {
       |${
         resolvers.map {
           val queryName = it.fileName.baseName()
-          "  $queryName: () => { return $queryName; },"
+          val importName = it.fileName.baseName()
+          "  $queryName: (args) => { return [...new Set($importName.search(args.query, Object.assign({enrich: true}, args.options)).map(it => it.result.map(it2=>it2.doc)).flat())] },"
         }.joinToString("\n")
       }
       |};

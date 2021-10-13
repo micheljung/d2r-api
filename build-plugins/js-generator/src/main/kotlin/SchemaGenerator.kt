@@ -41,7 +41,7 @@ class SchemaGenerator(private val logger: Logger) {
     val queries = files.map { path ->
       val queryName = path.baseName()
       val typeName = typeName(path)
-      "  $queryName: [$typeName]"
+      "  $queryName(query: String, options: String): [$typeName]"
     }.joinToString("\n")
 
     Files.writeString(
