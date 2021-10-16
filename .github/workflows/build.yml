@@ -2,8 +2,6 @@ name: ci
 
 on:
   push:
-    branches:
-      - 'tiny-api'
 
 jobs:
   docker:
