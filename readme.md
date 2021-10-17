@@ -80,7 +80,7 @@ Result:
 
 ## Where the Data comes from
 
-Using the [`data-extractor`](build-plugins/data-extractor), a developer can extract the game's "excel" data directly
+Using the [data-extractor](build-plugins/data-extractor), a developer can extract the game's "excel" data directly
 from a game installation into the folder [d2r](d2r). This could be improved by reading the data directly from Blizzard's
 CDN at build time, so no game installation is needed.
 
@@ -90,6 +90,15 @@ future, too.
 Any empty or "category" lines (like "Expansion", "Armors") are removed based on heuristic. Otherwise, the data contains
 everything that's present in the game files, including [unused items](https://tcrf.net/Diablo_II/Unused_Objects). It's
 up to the caller to detect and remove such unwanted.
+
+To update the extracted data, execute:
+
+    .\gradlew extract
+
+or if your installation is at a non-default location:
+
+
+     .\gradlew -PdataPath="G:/Diablo II Resurrected/Data" extract
 
 ## About the GraphQL Schema
 
