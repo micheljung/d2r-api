@@ -47,22 +47,7 @@ Result:
 
 ### Find all complete rune words
 
-**Not yet working due to nextapps-de/flexsearch#264**
-
-Query:
-
-```
-{
-  runes(query: [{field:"complete", query: 1}]) {
-    runeName
-    runesUsed
-  }
-}
-```
-
-### Find all complete rune words
-
-**Not yet working due to nextapps-de/flexsearch#264**
+**Not yet working due to [nextapps-de/flexsearch#264](https://github.com/nextapps-de/flexsearch/issues/264#issue-986854819)**
 
 Query:
 
