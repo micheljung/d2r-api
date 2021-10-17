@@ -45,35 +45,32 @@ Result:
 }
 ```
 
-### 
+### Find all complete rune words
+
+**Not yet working due to nextapps-de/flexsearch#264**
 
 Query:
 
 ```
 {
-  uniqueitems {
-    index
-    itemName
+  runes(query: [{field:"complete", query: 1}]) {
+    runeName
+    runesUsed
   }
 }
 ```
 
-Result:
+### Find all complete rune words
 
-```json
+**Not yet working due to nextapps-de/flexsearch#264**
+
+Query:
+
+```
 {
-  "data": {
-    "uniqueitems": [
-      {
-        "index": "The Gnasher",
-        "itemName": "Hand Axe"
-      },
-      ...
-      {
-        "index": "Hellfire Torch",
-        "itemName": "charm"
-      }
-    ]
+  runes(query: [{field:"complete", query: 1}]) {
+    runeName
+    runesUsed
   }
 }
 ```
@@ -96,7 +93,6 @@ To update the extracted data, execute:
     .\gradlew extract
 
 or if your installation is at a non-default location:
-
 
      .\gradlew -PdataPath="G:/Diablo II Resurrected/Data" extract
 
