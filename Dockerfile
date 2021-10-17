@@ -10,6 +10,6 @@ RUN npm ci && npx rollup -c
 FROM node:lts-alpine3.14
 ENV PATH /opt/app/api/node_modules/.bin:$PATH
 WORKDIR /opt/app/api
-COPY --from=build /opt/app/api/bundle.js ./server.js
+COPY --from=build /opt/app/api/bundle.mjs ./server.mjs
 COPY --from=build /opt/app/api/node_modules/ ./node_modules
-CMD ["node", "server.js"]
+CMD ["node", "server.mjs"]
