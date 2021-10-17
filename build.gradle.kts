@@ -18,7 +18,7 @@ allprojects {
 d2rExtractor {
   val source = project.findProperty("dataPath")?.toString() ?: "C:/Program Files (x86)/Diablo II Resurrected/Data"
   this.source.set(File(source))
-  target.set(layout.projectDirectory.dir("d2r"))
+  target.set(layout.projectDirectory.dir("api/d2r"))
   excludes.set(
     listOf(
       // This file is big, useless and contains a column "4737" with no values

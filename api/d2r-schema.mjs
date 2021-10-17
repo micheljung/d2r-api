@@ -6,7 +6,7 @@ import flexsearch from 'flexsearch';
 
 const {Document} = flexsearch;
 
-const excelDir = '../d2r/data/data/global/excel/';
+const excelDir = 'd2r/data/data/global/excel/';
 const filenames = fs.readdirSync(excelDir);
 
 const INVALID_CHARACTERS = /[^\w\d]/g
