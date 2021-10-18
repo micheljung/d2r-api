@@ -2,6 +2,7 @@ plugins {
   kotlin("jvm") version "1.5.31"
   kotlin("plugin.allopen") version "1.6.0-M1" apply false
   id("ch.micheljung.d2rapi.data-extractor")
+  id("ch.micheljung.d2rapi.sprite-converter")
 }
 
 allprojects {
@@ -25,6 +26,11 @@ d2rExtractor {
       "data/data/global/excel/sounds.txt"
     )
   )
+}
+
+d2rSpriteConverter {
+  source.set(File("S:\\tmp\\cascview\\data\\data\\hd"))
+  target.set(project.buildDir.resolve("convert"))
 }
 
 dependencies {
