@@ -47,8 +47,6 @@ Result:
 
 ### Find all complete rune words
 
-**Not yet working due to [nextapps-de/flexsearch#264](https://github.com/nextapps-de/flexsearch/issues/264#issue-986854819)**
-
 Query:
 
 ```
@@ -59,6 +57,28 @@ Query:
   }
 }
 ```
+
+Result:
+
+```
+{
+  "data": {
+    "runes": [
+      {
+        "runeName": "Ancients' Pledge",
+        "runesUsed": "RalOrtTal"
+      },
+      ...
+      {
+        "runeName": "Zephyr",
+        "runesUsed": "OrtEth"
+      }
+    ]
+  }
+}
+```
+
+Currently, all queried fields are `AND`. `OR` is not yet supported, nor is any combination of both.
 
 ## Where the Data comes from
 

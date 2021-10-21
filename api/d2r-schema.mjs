@@ -156,9 +156,9 @@ function determineType(typeName, properties) {
   return type
 }
 
-function removeDuplicates(result) {
+function finalizeResult(result) {
   return [...new Set(result
-    .map(it => it.result.map(it2 => it2.doc))
+    .map(it => it.result)
     .flat()
   )]
 }
@@ -169,7 +169,6 @@ function appendToSchema(fieldName, typeName, columnProperties, schemaComposer) {
     name: typeName,
     fields: fields,
   })
-  const defaultOptions = {enrich: true};
 
   schemaComposer.Query.addFields({
     [fieldName]: schemaComposer.createResolver({
@@ -184,14 +183,12 @@ function appendToSchema(fieldName, typeName, columnProperties, schemaComposer) {
           return Object.values(documents[fieldName].store);
         }
         if (args.query === undefined) {
-          const result = documents[fieldName].search(args.contains, Object.assign(defaultOptions));
-          return removeDuplicates(result)
+          const result = documents[fieldName].search(args.contains);
+          return finalizeResult(result).map(index => documents[fieldName].store[index])
         }
 
-        // FIXME this doesn't work yet because of https://github.com/nextapps-de/flexsearch/issues/264
-        //  also, how to incorporate {enrich: true}?
         const result = documents[fieldName].search(args.query);
-        return removeDuplicates(result)
+        return finalizeResult(result).map(index => documents[fieldName].store[index])
       }
     })
   })
