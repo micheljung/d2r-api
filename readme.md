@@ -78,7 +78,7 @@ Result:
 }
 ```
 
-Currently, all queried fields are `AND`. `OR` is not yet supported, nor is any combination of both.
+Currently, all queried fields are `OR`. `AND` will be soon. Combinations of the the likely won't be supported.
 
 ## Where the Data comes from
 
